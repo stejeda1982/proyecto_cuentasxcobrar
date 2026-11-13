@@ -1,0 +1,11 @@
+{
+    "name": "Cartera",
+    "alias": "cartera",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Cartera\\Providers\\CarteraServiceProvider"
+    ],
+    "files": []
+}

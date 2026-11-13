@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/integracion",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Integracion\\": "app/",
+            "Modules\\Integracion\\Database\\Factories\\": "database/factories/",
+            "Modules\\Integracion\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Integracion\\Tests\\": "tests/"
+        }
+    }
+}

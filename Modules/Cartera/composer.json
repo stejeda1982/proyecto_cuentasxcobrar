@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/cartera",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Cartera\\": "app/",
+            "Modules\\Cartera\\Database\\Factories\\": "database/factories/",
+            "Modules\\Cartera\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Cartera\\Tests\\": "tests/"
+        }
+    }
+}
