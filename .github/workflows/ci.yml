@@ -1,0 +1,69 @@
+name: CI
+
+# T0.6 — Pipeline de integración continua.
+# Los tres gates del DoD de fase: Pint (estilo), PHPStan (análisis
+# estático, nivel 4) y Pest (tests con SQLite en memoria). El workflow
+# replica localmente: vendor/bin/pint --test && vendor/bin/phpstan
+# analyse && vendor/bin/pest.
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  tests:
+    name: Pint · PHPStan · Pest
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: cxc_test
+          POSTGRES_USER: cxc
+          POSTGRES_PASSWORD: secreto
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo, pdo_pgsql, pdo_sqlite, pgsql, intl, ldap, redis, bcmath
+          coverage: none
+
+      - name: Instalar Composer
+        uses: ramsey/composer-install@v3
+
+      - name: Copiar entorno de pruebas
+        run: cp .env.testing .env
+
+      - name: Generar APP_KEY de pruebas
+        # key:generate --show imprime la clave sin escribir archivos.
+        # Se inyecta vía GITHUB_ENV; Laravel 11 usa Dotenv *immutable*,
+        # por lo que .env.testing (APP_KEY vacía) NO la sobrescribe.
+        run: echo "APP_KEY=$(php artisan key:generate --show)" >> "$GITHUB_ENV"
+
+      - name: Estilo — Laravel Pint
+        run: vendor/bin/pint --test
+
+      - name: Análisis estático — PHPStan
+        run: vendor/bin/phpstan analyse
+
+      - name: Tests — Pest (SQLite en memoria)
+        run: vendor/bin/pest --parallel
