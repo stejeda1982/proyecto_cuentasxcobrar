@@ -1,0 +1,14 @@
+parameters:
+    level: 4
+    paths:
+        - app/SharedKernel
+        - Modules/Seguridad/app
+        - Modules/Seguridad/database/migrations
+        - Modules/Seguridad/database/seeders
+    excludePaths:
+        - Modules/*/app/Providers/RouteServiceProvider.php
+        - Modules/*/app/Providers/EventServiceProvider.php
+        - tests
+    ignoreErrors:
+        # Eloquent resuelve estáticos por magic; sin larastan, PHPStan no los ve.
+        - '#Call to an undefined static method Modules\\#'
