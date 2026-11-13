@@ -66,4 +66,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Tests — Pest (SQLite en memoria)
-        run: vendor/bin/pest --parallel
+        # Sin --parallel: la delegación a paratest falla en CI con pest 5.x
+        # (imprime la ayuda y aborta). La suite es pequeña (18 tests, :memory:),
+        # el paralelismo no aporta.
+        run: vendor/bin/pest
