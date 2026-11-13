@@ -8,9 +8,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, fase-0]
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, fase-0]
 
 jobs:
   tests:
